@@ -1,0 +1,120 @@
+# TODO Step 1: First problem: We would like to run the hello world application from IntelliJ but we can't connect to Eureka
+# Disable the hello world service in the (docker-compose file)!
+# because it's running in Docker
+# Working solution: NO
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: hello-world-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+      retry:
+        initial-interval: 1000
+        max-interval: 10000
+        multiplier: 1.1
+        max-attempts: 30000
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka
+
+---
+
+
+# TODO Step 2: We directly connect to Eureka using the exposed port (8761) on the host.
+# We can now reach Eureka but the application can't load the configuration from the config server because we get a
+# Docker internal ip address of the config server from Eureka.
+# Working solution: NO
+
+spring:
+  profiles: docker-local-directly-connect-to-eureka
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+---
+
+# TODO Step 3: Second problem: now we can load the configuration from the config server but if we want to connect to the
+# We can now reach Eureka and don't discover the config server using Eureka but directly reach out to the
+# config server that is exposed on port 8888 on the host
+# Everything seems fine until we do a call on the Rest API of the hello-world-service http://localhost:8080/hello
+# Working solution: NO
+
+spring:
+  profiles: docker-local-directly-connect-to-config-server
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      uri: http://localhost:8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+---
+
+# TODO Step 4: now we can load the configuration and register at Eureka. But making a call from the hello
+# world service to the random word service will not work because we get again a Docker internal ip address (of the random word service)
+# See the mapping between the service instances and the ip:port : http://localhost:8080/discovery-client-services
+# We explicitly configure the ribbon client with a static list of servers for the random-word-service
+# Working solution: YES
+
+spring:
+  profiles: docker-local-static-ribbon-configuration
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      uri: http://localhost:8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    enabled: false
+
+random-word-service:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:8081
+
+---
+
+# TODO Step 5: Now i would like to scale the number of instances of the random word service
+# Enable another instance in the docker-compose file!
+# See the mapping between the service instances and the ip:port : http://localhost:8080/discovery-client-services
+
+spring:
+  profiles: docker-local-static-ribbon-configuration-multiple-instances
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      uri: http://localhost:8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    enabled: false
+
+random-word-service:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: localhost:8081, localhost:8082

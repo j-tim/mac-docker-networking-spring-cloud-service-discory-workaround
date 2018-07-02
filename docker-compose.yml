@@ -1,0 +1,41 @@
+version: '3.2'
+
+services:
+
+  config-server:
+    image: jtim/config-server
+    build:
+      context: config-server
+    ports:
+      - 8888:8888
+
+  service-registry:
+    image: jtim/service-registry
+    container_name: service-registry
+    build:
+      context: service-registry
+    ports:
+      - 8761:8761
+
+  # TODO Step 1: First problem: We would like to run the hello world application from IntelliJ
+  # Disable this section or stop the hello-world-service from the command line
+  hello-world-service:
+    image: jtim/hello-world-service
+    build:
+      context: hello-world-service
+    ports:
+      - 8080:8080
+
+  random-word-service:
+    image: jtim/random-word-service
+    build:
+      context: random-word-service
+    ports:
+      - 8081:8081
+
+  # TODO Step 5: Now i would like to scale the number of instances of the random word service
+  # Uncomment this part to run another instance of the andom-word-service
+#  another-random-word-service:
+#    image: jtim/random-word-service
+#    ports:
+#      - 8082:8081

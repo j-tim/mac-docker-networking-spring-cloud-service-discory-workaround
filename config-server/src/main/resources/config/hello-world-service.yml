@@ -1,0 +1,13 @@
+# expose all endpoints:
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+info:
+  app:
+    name: Hello World service
+    description: My First Spring Boot 2 App whoot, whoot...
+    java-vendor: ${java.specification.vendor}
+    java-version: ${java.version}

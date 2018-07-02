@@ -1,0 +1,20 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: native
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+
+# expose all endpoints:
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

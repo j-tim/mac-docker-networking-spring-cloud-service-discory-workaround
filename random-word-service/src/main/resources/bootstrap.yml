@@ -1,0 +1,39 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: random-word-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+      retry:
+        initial-interval: 1000
+        max-interval: 10000
+        multiplier: 1.1
+        max-attempts: 30000
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka
+
+---
+
+spring:
+  profiles: docker-local
+  cloud:
+    config:
+      discovery:
+        enabled: false
+      uri: http://localhost:8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
