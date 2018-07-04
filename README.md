@@ -17,7 +17,7 @@ From the Docker website: [https://docs.docker.com/docker-for-mac/networking/#the
 
 > There is no docker0 bridge on macOS Because of the way networking is implemented in Docker for Mac, you cannot see a docker0 interface on the host. This interface is actually within the virtual machine.
 
-Unlike running Docker on Ubuntu Docker for Mac doesn't support a `docker0` bridge what does this mean?
+Unlike running Docker on Linux Docker for Mac doesn't support a `docker0` bridge what does this mean?
 On Ubuntu you can directly connect to the `internal docker network` IP addresses but because of the extra Docker network layer in Mac OS X
 you can't... 
 
