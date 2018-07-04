@@ -17,18 +17,19 @@ From the Docker website: [https://docs.docker.com/docker-for-mac/networking/#the
 
 > There is no docker0 bridge on macOS Because of the way networking is implemented in Docker for Mac, you cannot see a docker0 interface on the host. This interface is actually within the virtual machine.
 
-Unlike running Docker on Linux Docker for Mac doesn't support a `docker0` bridge what does this mean?
-On Ubuntu you can directly connect to the `internal docker network` IP addresses but because of the extra Docker network layer in Mac OS X
-you can't... 
+Unlike running Docker on Linux, Docker for Mac doesn't support a `docker0` bridge what does this mean?
+On Linux you can directly connect to the `internal docker network` IP addresses but because of the extra Docker network layer in Mac you can't... 
 
 The root cause of the issue is a mix of Apple not willing to backport a fix that has been release in 10.12 and
 Docker not willing add additional root access for Docker for mac. 
 
+From the Docker website: [https://docs.docker.com/v17.12/docker-for-mac/networking/#a-view-into-implementation](https://docs.docker.com/v17.12/docker-for-mac/networking/#a-view-into-implementation)
+
 > there are several problems. In particular, there is a bug in macOS that is only fixed in 10.12 and is not being backported as far as we can tell, which means that we could not support this in all supported macOS versions. In addition, this network setup would require root access which we are trying to avoid entirely in Docker for Mac (we currently have a very small root helper that we are trying to remove).
 
-Result we have to deal with this issue and work around the problem. 
+Result: we have to deal with this issue and work around the problem. 
 There are several work around for the missing `docker0` bridge 
-on Mac OS X but this example project will focus on a workaround that plays well Spring Cloud Microservices and doesn't require
+on Mac but this example project will focus on a workaround that plays well Spring Cloud Microservices and doesn't require
 you to install additional software or run scripts to work around the problem.   
 
 ## The example project
