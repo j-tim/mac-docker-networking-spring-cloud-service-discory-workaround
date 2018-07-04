@@ -11,7 +11,7 @@ Everything was fine until we started some of our microservices in Docker and the
 but the service was not able to load it's configuration from the config server and was not able to communicate with
 the other microservice(s) running in Docker.
 
-What was the cause of this issue?   
+What is the cause of this issue?   
 
 From the Docker website: [https://docs.docker.com/docker-for-mac/networking/#there-is-no-docker0-bridge-on-macos](https://docs.docker.com/docker-for-mac/networking/#there-is-no-docker0-bridge-on-macos)
 
