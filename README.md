@@ -6,7 +6,7 @@ While developing our Microservices we heavily using Docker for (local) developme
 Some of our Microservices we run in Docker (including Spring Cloud Config Server and Spring Cloud Netflix Eureka)
 but we run the Microservice under development from our favorite IDE IntelliJ.
 
-Recently we moved from a Linux desktop to shinny Mac Books Pro :)
+Recently we moved from a Linux desktop to a shiny Macbook Pro :)
 Everything was fine until we started some of our microservices in Docker and the Microservice under development in IntelliJ
 but the service was not able to load it's configuration from the config server and was not able to communicate with
 the other microservice(s) running in Docker.
